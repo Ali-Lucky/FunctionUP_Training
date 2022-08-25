@@ -14,12 +14,30 @@ mongoose.connect("mongodb+srv://functionup-cohort:G0Loxqc9wFEGyEeJ@cluster0.rzot
 .then( () => console.log("MongoDb is connected"))
 .catch ( err => console.log(err) )
 
+
+//  # Commented by me ......................................................................................
+
+// app.use (
+//     function (req, res, next) {
+//         console.log ("inside GLOBAL MW");
+//         next();
+//   }
+//   );
+
+//  # Assignment -----------------------------------------------------------------------------------------------
+
+const moment = require('moment');
+
 app.use (
     function (req, res, next) {
-        console.log ("inside GLOBAL MW");
+        console.log ("It's my assignment");
+        let time = moment().format('YYYY-MM-DD HH:MM:SS');
+        let IP = req.ip;
+        let url = req.originalUrl;
+        console.log( time, " " , IP, " ", url )
         next();
-  }
-  );
+    }
+);
 
 app.use('/', route);
 
