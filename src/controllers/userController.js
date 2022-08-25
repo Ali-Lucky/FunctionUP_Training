@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose")
 const UserModel= require("../models/userModel")
 
 
