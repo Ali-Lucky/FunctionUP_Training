@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const ObjectId = mongoose.Schema.Types.ObjectId
+const ObjectId = mongoose.Schema.Types.ObjectId;
+const moment = require('moment')
 
 const orderSchema = new mongoose.Schema( {
 	userId: {
@@ -12,7 +13,10 @@ const orderSchema = new mongoose.Schema( {
     },
 	amount: Number,
 	isFreeAppUser: Boolean, 
-	date: String,
+	date: {
+        type: String,
+        default : moment().format('DD/MM/YYYY') 
+    },
 },
 { timestamps: true });
 
