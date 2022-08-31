@@ -1,11 +1,15 @@
 const UserModel = require('../models/userModel');
 const jwt = require('jsonwebtoken');
- 
-const newUser = async function(req,res)
-{
-    let data=req.body;
-    let newData=await UserModel.create(data);
-    res.send({status : true,msg : newData});
+
+
+const newUser = async function (req, res) {
+        let data = req.body;
+        if (Object.keys(data).length != 0) {
+            let newData = await UserModel.create(data);
+            res.send({ status: true, msg: newData });
+        }
+        else res.status(400).send({ msg: "BAD REQUEST" })
+        res.status(500).send({ msg: "Error", error: err.message })
 };
 
 const loginUser = async function(req,res)
@@ -23,53 +27,44 @@ const loginUser = async function(req,res)
     }
 };
 
-const getUserDetails = async function(req,res)
-{
-    let id=req.params.userId;
-    let user=await UserModel.findOne({_id : id,isDeleted : false});
-    if(user==null)
-    {
-        res.send({status : false,msg : 'User does not exist!'});
-    
-    }    
-    else
-    {
-        res.send({status : true,msg : user});
+
+const getUserDetails = async function (req, res) {
+    let id = req.params.userId;
+    let user = await UserModel.findOne({ _id: id, isDeleted: false });
+    if (!user) {
+        res.send({ status: false, msg: 'User does not exist!' });
+    }
+    else {
+        res.send({ status: true, msg: user });
     }
 };
 
-const updateUserDetails = async function(req,res)
-{
-    let id=req.params.userId;
-    let data=req.body;
-    let user=await UserModel.findOneAndUpdate({_id : id,isDeleted : false},{$set: {age: 30}},{new : true});
-    if(user==null)
-    {
-        res.send({status : false,msg : 'User does not exist!'});
+const updateUserDetails = async function (req, res) {
+    let id = req.params.userId;
+    let data = req.body;
+    let user = await UserModel.findOneAndUpdate({ _id: id, isDeleted: false }, { $set: { age: 30 } }, { new: true });
+    if (!user) {
+        res.send({ status: false, msg: 'User does not exist!' });
     }
-    else
-    {
-        res.send({status : true,msg : user});
+    else {
+        res.send({ status: true, msg: user });
     }
 };
 
-const deleteUser = async function(req,res)
-{
-    let id=req.params.userId;
+const deleteUser = async function (req, res) {
+    let id = req.params.userId;
     // let user=await UserModel.findOneAndUpdate({_id : id,isDeleted : false},{isDeleted : true});
     // if(user==null)
 
-    let deletes=await UserModel.updateOne({_id:id},{$set:{isDeleted:true}},{upsert:true})
-  res.send({msg:"user successfully deleted",data:deletes})
- if(user==null)
-    {
-        res.send({status : false,msg : 'User does not exist!'});
-    
-    }    
-    else
-    {
-        res.send({status : true,msg : 'User has been deleted successfully!'});
+    let deletes = await UserModel.updateOne({ _id: id }, { $set: { isDeleted: true } }, { upsert: true })
+    res.send({ msg: "user successfully deleted", data: deletes })
+    if (!user) {
+        res.send({ status: false, msg: 'User does not exist!' });
+
+    }
+    else {
+        res.send({ status: true, msg: 'User has been deleted successfully!' });
     }
 }
 
-module.exports={newUser,loginUser,getUserDetails,updateUserDetails,deleteUser}
+module.exports = { newUser, loginUser, getUserDetails, updateUserDetails, deleteUser }
